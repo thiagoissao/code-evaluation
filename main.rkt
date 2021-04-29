@@ -24,7 +24,7 @@
   (test-suite
    "length-tests"
    (check-equal? (length testsFile1) 343)
-   (check-equal? (length testsFile2) 16)))
+   (check-equal? (length testsFile2) 17)))
 
 ; Função que verifica se a string pertence a um comentário
 (define (isComment str)
@@ -78,7 +78,7 @@
   (test-suite
    "numberOfLargeLines-tests"
    (check-equal? (numberOfLargeLines testsFile1) 6)
-   (check-equal? (numberOfLargeLines testsFile2) 1)))
+   (check-equal? (numberOfLargeLines testsFile2) 0)))
 
 ; Função que determina a nota para o número de linhas do código
 (define (numberOfLinesGrade code)
@@ -143,8 +143,16 @@
 (define numberOfLargeLinesGrade-tests
   (test-suite
    "numberOfLargeLinesGrade-tests"
-   (check-equal? (numberOfLargeLinesGrade testsFile1) 10)
-   (check-equal? (numberOfLargeLinesGrade testsFile2) 0)))
+   (check-equal? (numberOfLargeLinesGrade testsFile1) 0)
+   (check-equal? (numberOfLargeLinesGrade testsFile2) 10)))
+
+; Função que obtém a nota final
+(define (finalGrade code)
+  (define linesGrade (* 5 (numberOfLinesGrade code)))
+  (define comtsGrade (* 1 (commentsGrade code)))
+  (define definesGrade (* 2 (numberOfDefinesGrade code)))
+  (define largeLinesGrade (* 2 (numberOfLargeLinesGrade code)))
+  (+ linesGrade comtsGrade definesGrade largeLinesGrade))
 
 ; --------------------------------- EXECUÇÃO DOS TESTES ------------------------------------------------
 
