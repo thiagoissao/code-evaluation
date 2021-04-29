@@ -13,3 +13,5 @@
 ;; Exemplos
 #; (define p1 (ponto 3 4))
 #; (define p2 (ponto 8 2))
+;; Devolve uma versão não aninhada de lst, isto é,
+;; uma lista com os mesmos
