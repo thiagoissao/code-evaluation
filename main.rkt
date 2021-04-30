@@ -8,10 +8,8 @@
 (define example1 "examples/example1.rkt")
 (define example2 "examples/example2.rkt")
 
-(define path "examples/example1.rkt")
 (define testsFile1 (file->lines example1))
 (define testsFile2 (file->lines example2))
-(define file (file->lines path))
 
 ; Função para o tamanho de uma lista
 (define (length lst)
@@ -147,12 +145,32 @@
    (check-equal? (numberOfLargeLinesGrade testsFile2) 10)))
 
 ; Função que obtém a nota final
-(define (finalGrade code)
-  (define linesGrade (* 5 (numberOfLinesGrade code)))
-  (define comtsGrade (* 1 (commentsGrade code)))
-  (define definesGrade (* 2 (numberOfDefinesGrade code)))
-  (define largeLinesGrade (* 2 (numberOfLargeLinesGrade code)))
-  (+ linesGrade comtsGrade definesGrade largeLinesGrade))
+(define (finalGrade code [filename "racket file"])
+  (define linesGrade (* 0.5 (numberOfLinesGrade code)))
+  (define comtsGrade (* 0.1 (commentsGrade code)))
+  (define definesGrade (* 0.2 (numberOfDefinesGrade code)))
+  (define largeLinesGrade (* 0.2 (numberOfLargeLinesGrade code)))
+  (printf "------------------------~a--------------------------\n" filename)
+  (printf "Nota para quantidade de linhas: ~a\n" linesGrade)
+  (printf "Nota para quantidade de comentários: ~a\n" comtsGrade)
+  (printf "Nota para quantidade de definições: ~a\n" definesGrade)
+  (printf "Nota para comprimento de uma linha: ~a\n" largeLinesGrade)
+  (printf "NOTA FINAL: ~a\n" (+ linesGrade comtsGrade definesGrade largeLinesGrade))
+  (printf "---------------------------------------------------\n\n"))
+
+; Função para avaliar apenas um arquivo
+(define (evaluateFile)
+  (displayln "Digite a rota para um ARQUIVO em rkt: ")
+  (define path (read-line))
+  (define file (file->lines path))
+  (finalGrade file))
+
+; Função para avaliar um diretório
+(define (evaluateDir)
+  (displayln "Digite a rota para um DIRETÓRIO que contenha arquivos rkt: ")
+  (define path (read-line))
+  (let ([get-files (map path->string (directory-list path))])
+     (map (lambda (i) (finalGrade (file->lines (string-append path i)) i) i) get-files)))
 
 ; --------------------------------- EXECUÇÃO DOS TESTES ------------------------------------------------
 
